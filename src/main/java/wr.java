@@ -185,6 +185,50 @@ public class wr
         }
     }
 
+    public static void write(String str, String encode)
+    {
+        FileOutputStream fileOutputStream = null;
+        try                                  //文件流打开，文件读写
+        {
+            fileOutputStream = new FileOutputStream("out1.txt");
+            fileOutputStream.write(str.getBytes(encode));
+        }
+        catch (FileNotFoundException e)      //文件未找到
+        {
+            Toolkit.getDefaultToolkit().beep();
+            System.err.println("文件未找到！！！  " + "\n错误内容：" + e.toString());
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            System.out.println("未知编码");
+        }
+        catch (Exception e)                  //其它异常
+        {
+            Toolkit.getDefaultToolkit().beep();
+            e.printStackTrace();
+        }
+        finally
+        {
+            try                              //关闭流
+            {
+                if (fileOutputStream != null)
+                {
+                    fileOutputStream.close();
+                }
+            }
+            catch (NullPointerException e)    //空指针异常
+            {
+                Toolkit.getDefaultToolkit().beep();
+                System.err.println("文件已经被关闭，无法再次关闭！！！");
+            }
+            catch (Exception e)              //其它异常
+            {
+                Toolkit.getDefaultToolkit().beep();
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void main(String[] args)
     {
         String path = "t1.txt";
@@ -192,6 +236,7 @@ public class wr
         String str = read(file);
         System.out.println(str);
         write_auto(str);
-        System.out.println("MD5："+getFileMD5(path).equals(getFileMD5("out.txt")));
+        System.out.println("MD5：" + getFileMD5(path).equals(getFileMD5("out.txt")));
+        write(str,"utf-16");
     }
 }
